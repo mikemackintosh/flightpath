@@ -1,0 +1,63 @@
+upstream "example_upstream" {
+  addr = "http://localhost:3000"
+}
+
+upstream "example_net" {
+  addr = "http://localhost:3000"
+}
+
+certificate "example_cert" {
+  file {
+    private_key = "/etc/ssl/private/example.key"
+    certificate = "/etc/ssl/certs/example.crt"
+  }
+}
+
+domain "example.net" {
+  logging {
+    type     = json
+    output   = stdout
+    log_level = "DEBUG" // Default service-wide log level
+  }
+
+  alt_hosts = [ "www.example.net", "localhost" ]
+
+  path "/" {
+    upstream = upstream.example_net
+  }
+}
+
+domain "example.com" {
+  logging {
+    type     = json
+    output   = stdout
+    log_level = "DEBUG" // Default service-wide log level
+  }
+
+  alt_hosts = [ "www.example.com" ]
+
+  path "/" {
+    upstream = upstream.example_upstream
+  }
+}
+
+domain "secure.example.com" {
+  listen = ":443"
+
+  logging {
+    type     = "json"
+    output   = stdout
+    log_level = "DEBUG"
+  }
+
+  redirect_to_https = true
+
+  certificate = certificate.example_cert
+
+  path "/" {
+    upstream = upstream.example_upstream
+    add_headers = {
+      X-Frame-Options = "DENY"
+    }
+  }
+}
