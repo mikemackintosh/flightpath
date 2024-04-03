@@ -2,7 +2,7 @@ FlightPath
 -----------
 
 <p align="center">
-  <img width="148px" src="https://github.com/mikemackintosh/flightpath/raw/master/.github/flightpath.png">
+  <img width="148px" src="https://github.com/mikemackintosh/flightpath/raw/main/.github/flightpath.png">
 </p>
 
 FlightPath is a proxy alternative to Caddy, Nginx, Apache, etc. It's designed with flexibility in mind for extremely opinionated projects.
